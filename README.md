@@ -15,4 +15,4 @@ This invocation:
 
 ## TODO
 
-* build from source
+* build CFEngine from source
