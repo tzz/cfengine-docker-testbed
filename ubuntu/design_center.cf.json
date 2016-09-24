@@ -1,0 +1,10 @@
+{
+    "System::motd":
+    {
+        "motd": "\n ! System is under the control of CFEngine, local changes may by overwritten.\n",
+    },
+ "Applications::Nagios::NRPE":
+ {
+  "allowed_hosts": "localhost"
+ }
+}

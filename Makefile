@@ -21,7 +21,6 @@ ifneq ($(WITH_ACTIVATIONS),)
 endif
 
 build:
-	$(foreach target,$(TARGETS),cp design_center.cf design_center.cf.json cfengine-tester $(target)/;)
 	$(foreach target,$(TARGETS),$(DOCKER) build -t cfengine-docker-testbed:$(target) ./$(target);)
 
 run:

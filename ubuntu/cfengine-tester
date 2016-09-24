@@ -1,0 +1,19 @@
+#/bin/bash
+
+set -o xtrace
+
+/usr/bin/etckeeper commit -m "before CFEngine bootstrap"
+
+/etc/init.d/cfengine3 restart
+
+cf-key
+cf-agent -B $(hostname --ip-address)
+
+test -f /opt/local/inputs/design_center.cf.json && cf-agent -KI -f /opt/local/inputs/design_center.cf -b testbed_design_center
+
+/usr/bin/etckeeper commit -m "before CFEngine test"
+cf-agent -KI
+/usr/bin/etckeeper commit -m "after CFEngine test"
+
+cd /etc
+/usr/bin/git log -p --reverse > "/opt/local/log/etc.log"
