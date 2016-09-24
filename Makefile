@@ -7,16 +7,26 @@ endif
 TEST_DATE := $(shell /bin/date +%F-%H-%M-%S)
 TEST_LOGDIR := $(LOGDIR)/testruns/$(TEST_DATE)
 
+TARGETS=fedora ubuntu
+
+RUNFLAGS=
+WITH_SKETCHES=
+ifneq ($(WITH_SKETCHES),)
+	RUNFLAGS:=$(RUNFLAGS) -v $(WITH_SKETCHES):/var/cfengine/design-center/sketches:z
+endif
+
+WITH_ACTIVATIONS=
+ifneq ($(WITH_ACTIVATIONS),)
+	RUNFLAGS:=$(RUNFLAGS) -v $(WITH_ACTIVATIONS):/opt/local/inputs/design_center.cf.json:z
+endif
+
 build:
-	$(DOCKER) build -t cfengine-docker-testbed:fedora ./fedora
-	$(DOCKER) build -t cfengine-docker-testbed:ubuntu ./ubuntu
+	$(foreach target,$(TARGETS),cp design_center.cf design_center.cf.json cfengine-tester $(target)/;)
+	$(foreach target,$(TARGETS),$(DOCKER) build -t cfengine-docker-testbed:$(target) ./$(target);)
 
 run:
-	mkdir -p $(TEST_LOGDIR)/fedora/
-	$(DOCKER) run -it  -v $(TEST_LOGDIR)/fedora/:/opt/local/log/ cfengine-docker-testbed:fedora
-
-	mkdir -p $(TEST_LOGDIR)/ubuntu/
-	$(DOCKER) run -it  -v $(TEST_LOGDIR)/ubuntu/:/opt/local/log/ cfengine-docker-testbed:ubuntu
+	$(foreach target,$(TARGETS),mkdir -p $(TEST_LOGDIR)/$(target)/;)
+	$(foreach target,$(TARGETS),$(DOCKER) run -it  -v $(TEST_LOGDIR)/$(target)/:/opt/local/log/ $(RUNFLAGS) cfengine-docker-testbed:$(target);)
 
 kill:
 	$(DOCKER) kill `$(DOCKER) ps -q -f label=classification=cfengine-docker-testbed` || echo nothing to kill

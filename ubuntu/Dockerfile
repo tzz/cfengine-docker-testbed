@@ -27,4 +27,6 @@ RUN apt-get install -y cfengine-community
 RUN rm -f /var/cfengine/ppkeys/*
 RUN #(nop) invalidate from here.......
 ADD cfengine-tester /opt/local/bin/
+ADD design_center.cf /opt/local/inputs/
+ADD design_center.cf.json /opt/local/inputs/
 CMD /opt/local/bin/cfengine-tester

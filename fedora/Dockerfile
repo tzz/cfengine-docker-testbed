@@ -20,8 +20,10 @@ RUN rpm --import https://cfengine-package-repos.s3.amazonaws.com/pub/gpg.key
 ADD cfengine-community.repo /etc/yum.repos.d/cfengine-community.repo
 RUN dnf update -y
 # Perl Data::Dumper is required
-RUN dnf install -y cfengine-community perl-Data-Dumper
+RUN dnf install -y cfengine-community perl-Data-Dumper perl-Digest-MD5
 RUN rm -f /var/cfengine/ppkeys/*
 RUN #(nop) invalidate from here.......
 ADD cfengine-tester /opt/local/bin/
+ADD design_center.cf /opt/local/inputs/
+ADD design_center.cf.json /opt/local/inputs/
 CMD /opt/local/bin/cfengine-tester
