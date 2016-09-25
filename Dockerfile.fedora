@@ -17,7 +17,7 @@ RUN /usr/bin/git config --global user.email root@cfengine.docker.testbed.lan
 
 RUN etckeeper init
 RUN rpm --import https://cfengine-package-repos.s3.amazonaws.com/pub/gpg.key
-ADD cfengine-community.repo /etc/yum.repos.d/cfengine-community.repo
+ADD fedora/cfengine-community.repo /etc/yum.repos.d/cfengine-community.repo
 RUN dnf update -y
 # Perl Data::Dumper is required
 RUN dnf install -y cfengine-community perl-Data-Dumper perl-Digest-MD5

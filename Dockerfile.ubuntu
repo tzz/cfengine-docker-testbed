@@ -16,11 +16,11 @@ RUN apt-get install -y git curl whois procps etckeeper hostname findutils apt-tr
 RUN /usr/bin/git config --global user.name "Root Tester"
 RUN /usr/bin/git config --global user.email root@cfengine.docker.testbed.lan
 
-ADD etckeeper.conf /etc/etckeeper/etckeeper.conf
+ADD ubuntu/etckeeper.conf /etc/etckeeper/etckeeper.conf
 
 RUN etckeeper init
 RUN curl -s https://cfengine-package-repos.s3.amazonaws.com/pub/gpg.key | apt-key add -
-ADD cfengine-community.list /etc/apt/sources.list.d/cfengine-community.list
+ADD ubuntu/cfengine-community.list /etc/apt/sources.list.d/cfengine-community.list
 RUN apt-get update -y
 # Perl Data::Dumper is required
 RUN apt-get install -y cfengine-community

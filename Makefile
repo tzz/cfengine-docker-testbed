@@ -21,7 +21,7 @@ ifneq ($(WITH_ACTIVATIONS),)
 endif
 
 build:
-	$(foreach target,$(TARGETS),$(DOCKER) build -t cfengine-docker-testbed:$(target) ./$(target);)
+	$(foreach target,$(TARGETS),$(DOCKER) build -t cfengine-docker-testbed:$(target) -f Dockerfile.$(target) . ;)
 
 run:
 	$(foreach target,$(TARGETS),mkdir -p $(TEST_LOGDIR)/$(target)/;)
